@@ -1,0 +1,27 @@
+@baseUrl = http://localhost:5080
+
+### Register an account first (the database starts empty).
+POST {{baseUrl}}/api/auth/register
+Content-Type: application/json
+
+{"username":"user","password":"pass@123"}
+
+### Create an access token using the registered account.
+# @name login
+POST {{baseUrl}}/api/auth/token
+Content-Type: application/json
+
+{
+  "username": "user",
+  "password": "pass@123"
+}
+
+### Copy accessToken from the login response into this variable.
+@accessToken = REPLACE_WITH_ACCESS_TOKEN
+
+### Get the fixed team list using the access token.
+GET {{baseUrl}}/api/SoccerScoreTeams
+Authorization: Bearer {{accessToken}}
+
+### A request without a token returns HTTP 401.
+GET {{baseUrl}}/api/SoccerScoreTeams
